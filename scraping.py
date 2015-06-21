@@ -27,6 +27,8 @@ def team_format(team):
     team = team.lower()
     if team == "navi" or team == "natusvincere":
         team = "NatusVincere"
+    if team == "teamsolomid" or team == "tsm":
+        team = "TSM"
     if team == "mouz" or team == "mousesports":
         team = "Mousesports"
     if team == "envy us" or team == "envy" or team == "envyus":
@@ -117,7 +119,7 @@ def message_deconstructor(pbody):
                 return return_dict
                 pass
             except KeyError:
-                return_dict['map_error'] = "No records of %s vs %s on %s." % (return_dict['team1'], return_dict['team2'], post_body_split[wordindex])
+                return_dict['map_error'] = "No records of %s vs %s on %s." % (return_dict['team1'], return_dict['team2'], post_body_split[wordindex] + "[Check for yourself](http://www.csgonuts.com/history?t1=%s&t2=%s)" % (return_dict['team1'], return_dict['team2']))
                 return return_dict
                 pass
 
@@ -131,7 +133,7 @@ def bot_reply(pbody):
     elif 'team_error' in team_dict:
         return footnote(team_dict['team_error'], "", "")
     elif 'map_error' in team_dict:
-        return footnote(team_dict['map_error'], "", "")
+        return footnote(team_dict['map_error'], team_dict['team1'], team_dict['team2'])
     elif 'error' not in team_dict:
         if 'map_percentage' in team_dict:
             reply_to_reddit = team_dict['map_percentage'] + ' on ' + team_dict['map_name']
