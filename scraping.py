@@ -1,7 +1,7 @@
 from lxml import html
 import requests
 
-map_pool = ["dust2", "inferno", "mirage", "cache", "nuke", "overpass"]
+map_pool = ["dust2", "inferno", "mirage", "cache", "nuke", "overpass", "cobblestone"]
 
 def get_percentage(team1, team2):
 
@@ -16,8 +16,8 @@ def get_percentage(team1, team2):
 
 def footnote(reply, team1, team2):
     reply += "\n\n----\n\n^This ^is ^a ^bot ^made ^by ^/u/TreSxNine ^that ^uses ^[CSGOnuts.com](http://www.csgonuts.com/) ^to ^gather ^information ^about ^team ^matchups." \
-                   "\n\n^Call ^it ^by ^using ^'Statbot! ^[\*Whatever\*] ^[team1] ^vs ^[team2] ^[\*Whatever\*] ^[map ^\(optional\)]'." \
-                   "\n\n[^[Report ^a ^bug]](http://www.np.reddit.com/message/compose/?to=tresxnine&amp;subject=CSGOnutsStatsBot)"
+             "\n\n^Call ^it ^by ^using ^'Statbot! ^[\*Whatever\*] ^[team1] ^vs ^[team2] ^[\*Whatever\*] ^[map ^\(optional\)]'." \
+             "\n\n[^[Report ^a ^bug]](http://www.np.reddit.com/message/compose/?to=tresxnine&amp;subject=CSGOnutsStatsBot)"
     if team1 != "" and team2 != "":
         reply += " [^[Source]](http://www.csgonuts.com/history?t1=%s&t2=%s)" % (team1, team2)
     return reply
@@ -49,6 +49,8 @@ def team_format(team):
         team = "Nihilum"
     if team == "vox" or team == "voxeminor":
         team = "VoxEminor"
+    if team == "winoutnet" or team == "winout":
+        team = "WinOut.net"
     return team
 
 def get_maps(team1, team2, map_choice):
@@ -84,7 +86,7 @@ def message_deconstructor(pbody):
                 return_dict['global_percentage'] = get_percentage(return_dict['team1'], return_dict['team2'])
 
                 if return_dict['global_percentage'] == "No matches":
-                    return_dict['team_error'] = "There's no record of %s vs %s. [Check for yourself](http://www.csgonuts.com/history?t1=%s&t2=%s)" % (return_dict['team1'], return_dict['team2'], return_dict['team1'], return_dict['team2'])
+                    return_dict['team_error'] = "No record of %s vs %s. [Check for yourself](http://www.csgonuts.com/history?t1=%s&t2=%s)" % (return_dict['team1'], return_dict['team2'], return_dict['team1'], return_dict['team2'])
                     return return_dict
 
                 if return_dict['global_percentage'] == []:
