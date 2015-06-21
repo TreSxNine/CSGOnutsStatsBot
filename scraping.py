@@ -96,15 +96,15 @@ def message_deconstructor(pbody):
                                                 "team names. If you think this is faulty, please contact me."
                     return return_dict
             except IndexError:
-                return_dict['error'] = "Bad formatting. Keep in mind that you can't use spaces in team names. " \
-                                       "(Are there one or more recorded matches between these two teams on " \
-                                       "csgonuts.com?)"
+                return_dict['error'] = "Invalid request! Either this is a very rare error saying that there are no recorded" \
+                                       "matches between these two teams, or you formatted the command incorrectly (less likely)" \
+                                       ""
                 return return_dict
                 pass
             except KeyError:
-                return_dict['error'] = "Bad formatting. Keep in mind that you can't use spaces in team names. " \
-                                       "(Are there one or more recorded matches between these two teams on " \
-                                       "csgonuts.com?)"
+                return_dict['error'] = "Invalid request! Either this is a very rare error saying that there are no recorded" \
+                                       "matches between these two teams, or you formatted the command incorrectly (less likely)" \
+                                       ""
                 return return_dict
                 pass
 
@@ -113,9 +113,9 @@ def message_deconstructor(pbody):
                 return_dict['map_percentage'] = get_maps(return_dict['team1'], return_dict['team2'], post_body_split[wordindex])
                 return_dict['map_name'] = post_body_split[wordindex]
             except IndexError:
-                return_dict['error'] = "Bad formatting. Keep in mind that you can't use spaces in team names. " \
-                                       "(Are there one or more recorded matches between these two teams on " \
-                                       "csgonuts.com?)"
+                return_dict['error'] = "Invalid request! Either this is a very rare error saying that there are no recorded" \
+                                       "matches between these two teams, or you formatted the command incorrectly (less likely)" \
+                                       ""
                 return return_dict
                 pass
             except KeyError:
