@@ -1,5 +1,5 @@
 # CSGOnutsStatsBot
-###A bot made by /u/tresxnine that displays matchup info when requested.
+A bot made by /u/tresxnine that displays matchup info when requested.
 
 ###replybot.py
 Where I search for comments and decide to reply or not.
