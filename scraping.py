@@ -84,7 +84,7 @@ def message_deconstructor(pbody):
         if not "vs" in post_body_split:
             return_dict['vs_error'] = "Incorrect formatting. Missing 'vs'"
             return return_dict
-        if post_body_split[wordindex] == "vs":
+        if post_body_split[wordindex] == "vs" or post_body_split[wordindex] == "vs.":
             try:
                 return_dict['team1'] = team_format(post_body_split[wordindex-1])
                 return_dict['team2'] = team_format(post_body_split[wordindex+1])
