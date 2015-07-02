@@ -15,12 +15,17 @@ def get_percentage(team1, team2):
     return results_percentage + results_amount
 
 def footnote(reply, team1, team2):
-    reply += "\n\n----\n\n^This ^is ^a ^bot ^made ^by ^/u/TreSxNine ^that ^uses ^[CSGOnuts.com](http://www.csgonuts.com/) ^to ^gather ^information ^about ^team ^matchups." \
+    reply += "\n\n----\n\n^This ^is ^a ^bot ^made ^by ^[/u/TreSxNine](http://www.reddit.com/user/TreSxNine/) ^that ^uses ^[CSGOnuts.com](http://www.csgonuts.com/) ^to ^gather ^information ^about ^team ^matchups." \
              "\n\n^Call ^it ^by ^using ^'Statbot! ^[\*Whatever\*] ^[team1] ^vs ^[team2] ^[\*Whatever\*] ^[map ^\(optional\)]'." \
              "\n\n[^[Report ^a ^bug]](http://www.np.reddit.com/message/compose/?to=tresxnine&amp;subject=CSGOnutsStatsBot)"
     if team1 != "" and team2 != "":
         reply += " [^[Source]](http://www.csgonuts.com/history?t1=%s&t2=%s)" % (team1, team2)
     return reply
+
+def mapformat(map):
+    map = map.replace("'", "").replace(".", "").replace("de_", "").replace(",", "")
+    map = map.lower()
+    return map
 
 def team_format(team):
     team = team.replace("'", "").replace(".", "")
@@ -57,6 +62,7 @@ def team_format(team):
 
 def get_maps(team1, team2, map_choice):
 
+    map_choice = mapformat(map_choice)
     page = requests.get('http://www.csgonuts.com/history?t1=%s&t2=%s' % (team1, team2))
     tree = html.fromstring(page.text)
     map_dict = {}
@@ -96,7 +102,7 @@ def message_deconstructor(pbody):
                                                 "team names. If you think this is faulty, please contact me."
                     return return_dict
             except IndexError:
-                return_dict['error'] = "Invalid request! Either this is a very rare error saying that there are no recorded" \
+                return_dict['error'] = "Invalid request! Either this is a very rare error saying that there are no recorded " \
                                        "matches between these two teams, or you formatted the command incorrectly (less likely)" \
                                        ""
                 return return_dict
@@ -108,10 +114,11 @@ def message_deconstructor(pbody):
                 return return_dict
                 pass
 
-        if post_body_split[wordindex] in map_pool:
+        if mapformat(post_body_split[wordindex]) in map_pool:
+            map = mapformat(post_body_split[wordindex])
             try:
-                return_dict['map_percentage'] = get_maps(return_dict['team1'], return_dict['team2'], post_body_split[wordindex])
-                return_dict['map_name'] = post_body_split[wordindex]
+                return_dict['map_percentage'] = get_maps(return_dict['team1'], return_dict['team2'], map)
+                return_dict['map_name'] = map
             except IndexError:
                 return_dict['error'] = "Invalid request! Either this is a very rare error saying that there are no recorded" \
                                        "matches between these two teams, or you formatted the command incorrectly (less likely)" \
@@ -119,7 +126,7 @@ def message_deconstructor(pbody):
                 return return_dict
                 pass
             except KeyError:
-                return_dict['map_error'] = "No records of %s vs %s on %s." % (return_dict['team1'], return_dict['team2'], post_body_split[wordindex] + "[Check for yourself](http://www.csgonuts.com/history?t1=%s&t2=%s)" % (return_dict['team1'], return_dict['team2']))
+                return_dict['map_error'] = "No records of %s vs %s on %s. " % (return_dict['team1'], return_dict['team2'], map + "[Check for yourself](http://www.csgonuts.com/history?t1=%s&t2=%s)" % (return_dict['team1'], return_dict['team2']))
                 return return_dict
                 pass
 
@@ -136,17 +143,13 @@ def bot_reply(pbody):
         return footnote(team_dict['map_error'], team_dict['team1'], team_dict['team2'])
     elif 'error' not in team_dict:
         if 'map_percentage' in team_dict:
-            reply_to_reddit = team_dict['map_percentage'] + ' on ' + team_dict['map_name']
+            reply_to_reddit = team_dict['map_percentage'] + ' on ' + team_dict['map_name'] + "."
         else:
             reply_to_reddit = team_dict['global_percentage'][0] + " (" + team_dict['global_percentage'][1] + ")."
     else:
         return footnote(team_dict['error'], "", "")
     return footnote(reply_to_reddit, team_dict['team1'], team_dict['team2'])
 
-
-
-
-
-
+print bot_reply("Statbot! Give us nip vs navi on de_Mirage.")
 
 

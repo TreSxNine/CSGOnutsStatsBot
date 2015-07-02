@@ -42,7 +42,7 @@ sql.commit()
 
 print('Logging in...')
 r = praw.Reddit(USERAGENT)
-r.login(USERNAME, PASSWORD) 
+r.login(USERNAME, PASSWORD, disable_warning=True)
 
 def replybot():
     print('Searching %s.' % SUBREDDIT)
@@ -58,7 +58,7 @@ def replybot():
             # Author is deleted.
             continue
 
-        if pauthor.lower() == USERNAME.lower():
+        if pauthor.lower() == USERNAME.lower() or pauthor.lower() == "tresxnine":
             #If user = self
             continue
 
