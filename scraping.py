@@ -81,7 +81,7 @@ def message_deconstructor(pbody):
     post_body_split = pbody.split()
 
     for wordindex in range(0, len(post_body_split)):
-        if not "vs" in post_body_split:
+        if not "vs" in post_body_split and not "vs." in post_body_split:
             return_dict['vs_error'] = "Incorrect formatting. Missing 'vs'"
             return return_dict
         if post_body_split[wordindex] == "vs" or post_body_split[wordindex] == "vs.":
@@ -126,7 +126,7 @@ def message_deconstructor(pbody):
                 return return_dict
                 pass
             except KeyError:
-                return_dict['map_error'] = "No records of %s vs %s on %s. " % (return_dict['team1'], return_dict['team2'], map + "[Check for yourself](http://www.csgonuts.com/history?t1=%s&t2=%s)" % (return_dict['team1'], return_dict['team2']))
+                return_dict['map_error'] = "No records of %s vs %s on %s. [Check for yourself](http://www.csgonuts.com/history?t1=%s&t2=%s)" % (return_dict['team1'], return_dict['team2'], map, return_dict['team1'], return_dict['team2'])
                 return return_dict
                 pass
 
@@ -150,6 +150,6 @@ def bot_reply(pbody):
         return footnote(team_dict['error'], "", "")
     return footnote(reply_to_reddit, team_dict['team1'], team_dict['team2'])
 
-print bot_reply("Statbot! Give us nip vs navi on de_Mirage.")
+print bot_reply("Statbot! Give us dignitas vs. gplay cobblestone.")
 
 
